@@ -1,6 +1,6 @@
 import os
 
-from app import create_app
+from LMS import create_app
 
 
 env_name = os.getenv('FLASK_ENV')
