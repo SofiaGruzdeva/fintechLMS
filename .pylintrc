@@ -1,0 +1,2 @@
+[MESSAGE CONTROL]
+disable=missing-docstring, duplicate-code, invalid-name, no-member, too-many-instance-attributes, unused-import, relative-beyond-top-level, protected-access [TYPECHECK] ignored-classes=SQLAlchemy, scoped_session ignored-modules=SQLAlchemy, scoped_session, jwt
