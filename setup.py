@@ -5,14 +5,14 @@
 from setuptools import setup
 
 setup(
-    name="LMS",
+    name="lms",
     version="0.0.0",
     author="Gruzdeva Sofia",
     author_email="gruzdeva@phystech.edu",
     url="https://github.com/SofiaGruzdeva/fintechHangman",
     license="MIT",
     packages=[
-        "LMS",
+        "lms",
     ],
     install_requires=[
     ],
