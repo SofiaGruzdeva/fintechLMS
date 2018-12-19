@@ -22,6 +22,12 @@ setup(
         "pytest-pycodestyle",
         "pytest-pep257",
         "pytest-cov",
+        "flask",
+        "Flask-SQLAlchemy",
+        "flask_script",
+        "flask_migrate",
+        "marshmallow",
+        "jwt"
     ],
     tests_require=[
         "pytest",
