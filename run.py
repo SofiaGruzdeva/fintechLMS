@@ -1,10 +1,10 @@
 import os
 
-from LMS import create_app
+from lms import create_app
 
 
-env_name = os.getenv('FLASK_ENV')
-app = create_app(env_name)
+ENV__NAME = os.getenv('FLASK_ENV')
+APP = create_app(ENV__NAME)
 
 if __name__ == '__main__':
-    app.run()
+    APP.run()

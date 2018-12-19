@@ -9,7 +9,7 @@ setup(
     version="0.0.0",
     author="Gruzdeva Sofia",
     author_email="gruzdeva@phystech.edu",
-    url="https://github.com/SofiaGruzdeva/fintechHangman",
+    url="https://github.com/SofiaGruzdeva/fintechLMS",
     license="MIT",
     packages=[
         "lms",

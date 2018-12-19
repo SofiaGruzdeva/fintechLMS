@@ -1,4 +1,4 @@
-## Hangman
+## LMS
 
 [![Build Status][travis-badge]][travis-url]
 [![Coverage][coverage-image]][coverage-url]
