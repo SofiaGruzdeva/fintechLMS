@@ -1,9 +1,9 @@
 from marshmallow import fields, Schema
 from . import db
 from .x import course_x_group, teacher_x_course
+from .db_class_base import db_class_base
 
-
-class study_course(db.Model):
+class study_course(db.Model, db_class_base):
     __tablename__ = 'study_courses'
 
     _id = db.Column(db.Integer, primary_key=True)
@@ -22,20 +22,6 @@ class study_course(db.Model):
     def __init__(self, data):
         self.name = data.get('name')
         self.description = data.get('description')
-
-    def save(self):
-        db.session.add(self)
-        db.session.commit()
-        return self.id
-
-    def update(self, data):
-        for key, item in data.items():
-            setattr(self, key, item)
-        db.session.commit()
-
-    def delete(self):
-        db.session.delete(self)
-        db.session.commit()
 
     def add_group(self, group):
         self.study_group.append(group)

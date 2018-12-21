@@ -3,9 +3,10 @@ from . import db
 from .UserModel import UserSchema
 from .x import course_x_group
 from .StudyCourse import StudyCourseShema
+from .db_class_base import db_class_base
 
 
-class study_group(db.Model):
+class study_group(db.Model, db_class_base):
     __tablename__ = 'study_groups'
 
     _id = db.Column(db.Integer, primary_key=True)
@@ -23,20 +24,6 @@ class study_group(db.Model):
         self.name = data.get('name')
         self.department_title = data.get('department_title')
         self.course_number = data.get('course_number')
-
-    def save(self):
-        db.session.add(self)
-        db.session.commit()
-        return self.id
-
-    def update(self, data):
-        for key, item in data.items():
-            setattr(self, key, item)
-        db.session.commit()
-
-    def delete(self):
-        db.session.delete(self)
-        db.session.commit()
 
     @staticmethod
     def get_one_group(_id):

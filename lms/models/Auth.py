@@ -64,6 +64,6 @@ class auth():
                     response=json.dumps({'error': error}),
                     status=400
                 )
-            g.user = {'id': user_id}
+            g.user = {'_id': user_id}
             return func(*args, **kwargs)
         return decorated_auth

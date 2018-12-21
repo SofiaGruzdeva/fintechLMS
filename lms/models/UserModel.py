@@ -1,9 +1,10 @@
 from marshmallow import fields, Schema
 from . import db
 from .x import teacher_x_course
+from .db_class_base import db_class_base
 
 
-class user_model(db.Model):
+class user_model(db.Model, db_class_base):
 
     __tablename__ = 'users'
 
@@ -12,7 +13,7 @@ class user_model(db.Model):
     login = db.Column(db.String(128), unique=True, nullable=False)
     password = db.Column(db.String(128), nullable=True)
     study_group_id = db.Column(db.Integer,
-                               db.ForeignKey('study_groups.id'),
+                               db.ForeignKey('study_groups._id'),
                                nullable=True)
     degree = db.Column(db.String(128), nullable=True)
     form_of_study = db.Column(db.String(128), nullable=True)
@@ -31,20 +32,6 @@ class user_model(db.Model):
         self.form_of_study = data.get('form_of_study')
         self.learning_base = data.get('learning_base')
         self.type_of_user = data.get('type_of_user')
-
-    def save(self):
-        db.session.add(self)
-        db.session.commit()
-        return self.id
-
-    def update(self, data):
-        for key, item in data.items():
-            setattr(self, key, item)
-        db.session.commit()
-
-    def delete(self):
-        db.session.delete(self)
-        db.session.commit()
 
     @staticmethod
     def get_all_users():

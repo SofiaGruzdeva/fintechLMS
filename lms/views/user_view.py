@@ -28,7 +28,7 @@ def create():
         message = {'error': user.type_of_user}
         return custom_response(message, 400)
     req_data = request.get_json()
-    data = user_schema.load(req_data)
+    data, _ = user_schema.load(req_data)
     letters = string.ascii_lowercase
     login_gen = ''.join(random.choice(letters) for i in range(10))
     user = user_model(data, login_gen)
@@ -93,3 +93,15 @@ def get_same_group_courses():
     for i in courses:
         course_list.append(study_course_shema.dump(i).data)
     return custom_response(course_list, 200)
+
+
+@user_api.route('/me', methods=['PUT'])
+@auth.auth_required
+def update():
+    req_data = request.get_json()
+    data = user_schema.load(req_data, partial=True)
+    return custom_response(str(data), 200)
+    user = UserModel.get_one_user(g.user.get('id'))
+    user.update(data)
+    ser_user = user_schema.dump(user).data
+    return custom_response(ser_user, 200)
