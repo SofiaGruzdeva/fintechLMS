@@ -7,27 +7,16 @@ from ..models.UserModel import user_model, UserSchema
 from ..models.Auth import auth
 from ..models.StudyGroup import study_group
 from ..views.study_course_view import study_course_shema
-
+from .shared import custom_response
 
 user_api = Blueprint('user_api', __name__)
 user_schema = UserSchema()
 
 
-def custom_response(res, status_code):
-
-    return Response(
-        mimetype="application/json",
-        response=json.dumps(res),
-        status=status_code)
-
-
 @user_api.route('/create', methods=['POST'])
 @auth.auth_required
+@auth.admin_required
 def create():
-    user = user_model.get_one_user(g.user.get('_id'))
-    if user.type_of_user.name != 'admin':
-        message = {'error': str(user.type_of_user.name)}
-        return custom_response(message, 400)
     req_data = request.get_json()
     data, _ = user_schema.load(req_data)
     letters = string.ascii_lowercase
@@ -38,7 +27,7 @@ def create():
     except LookupError:
         return custom_response('wrong user', 400)
 #    ser_data = user_schema.dump(user).data
-    return custom_response({'login': str(user)}, 200)
+    return custom_response({'login': login_gen}, 200)
 
 
 @user_api.route('/', methods=['GET'])

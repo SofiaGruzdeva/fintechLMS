@@ -4,6 +4,7 @@ from flask import json, Response, request, g
 from flask import current_app as app
 import jwt
 from ..models.UserModel import user_model
+from ..views.shared import custom_response
 
 
 class auth():
@@ -67,3 +68,17 @@ class auth():
             g.user = {'_id': user_id}
             return func(*args, **kwargs)
         return decorated_auth
+
+    @staticmethod
+    def admin_required(func):
+        @wraps(func)
+        def decorated_admin(*args, **kwargs):
+            token = request.headers.get('api-token')
+            data = auth.decode_token(token)
+            user_id = data['data']['user_id']
+            user = user_model.get_one_user(user_id)
+            admin_flg, error = user.is_admin()
+            if not admin_flg:
+                return custom_response(str(error), 400)
+            return func(*args, **kwargs)
+        return decorated_admin

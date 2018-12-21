@@ -76,6 +76,12 @@ class user_model(db.Model, db_class_base):
     def get_user_by_login(f_log):
         return user_model.query.filter(user_model.login == f_log).first()
 
+    def is_admin(self):
+        if self.type_of_user.name != 'admin':
+            message = {'error': self.type_of_user.name}
+            return False, message
+        return True, self.type_of_user.name
+
 
 class UserSchema(Schema):
     _id = fields.Int(dump_only=True)
