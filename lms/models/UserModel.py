@@ -1,7 +1,31 @@
+from enum import Enum
 from marshmallow import fields, Schema
 from . import db
 from .x import teacher_x_course
 from .db_class_base import db_class_base
+
+
+class form_of_study(Enum):
+    full_time = 1
+    extramural = 2
+    night = 3
+
+
+class learning_base(Enum):
+    contract = 1
+    budget = 2
+
+
+class type_of_user(Enum):
+    admin = 1
+    student = 2
+    teacher = 3
+
+
+class degree(Enum):
+    bachelor = 1
+    spec = 2
+    master = 3
 
 
 class user_model(db.Model, db_class_base):
@@ -15,13 +39,15 @@ class user_model(db.Model, db_class_base):
     study_group_id = db.Column(db.Integer,
                                db.ForeignKey('study_groups._id'),
                                nullable=True)
-    degree = db.Column(db.String(128), nullable=True)
-    form_of_study = db.Column(db.String(128), nullable=True)
-    learning_base = db.Column(db.String(128), nullable=True)
-    type_of_user = db.Column(db.String(128), nullable=False)
+    degree = db.Column(db.Enum(degree), nullable=True)
+    form_of_study = db.Column(db.Enum(form_of_study), nullable=True)
+    learning_base = db.Column(db.Enum(learning_base), nullable=True)
+    type_of_user = db.Column(db.Enum(type_of_user), nullable=False)
     study_course_id = db.relationship('study_course',
                                       secondary=teacher_x_course,
                                       backref='users', lazy=True)
+    city = db.Column(db.String(128), nullable=True)
+    info = db.Column(db.Text, nullable=True)
 
     def __init__(self, data, login):
         self.name = data.get('name')
@@ -32,6 +58,8 @@ class user_model(db.Model, db_class_base):
         self.form_of_study = data.get('form_of_study')
         self.learning_base = data.get('learning_base')
         self.type_of_user = data.get('type_of_user')
+        self.city = data.get('city')
+        self.info = data.get('info')
 
     @staticmethod
     def get_all_users():
@@ -59,3 +87,5 @@ class UserSchema(Schema):
     form_of_study = fields.Str(required=False)
     learning_base = fields.Str(required=False)
     type_of_user = fields.Str(required=True)
+    city = fields.Str(required=False)
+    info = fields.Str(required=False)

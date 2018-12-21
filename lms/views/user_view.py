@@ -1,5 +1,6 @@
 import random
 import string
+import sys
 from flask import request, json, Response, Blueprint, g
 from flask import current_app as app
 from ..models.UserModel import user_model, UserSchema
@@ -24,17 +25,20 @@ def custom_response(res, status_code):
 @auth.auth_required
 def create():
     user = user_model.get_one_user(g.user.get('_id'))
-    if user.type_of_user != 'admin':
-        message = {'error': user.type_of_user}
+    if user.type_of_user.name != 'admin':
+        message = {'error': str(user.type_of_user.name)}
         return custom_response(message, 400)
     req_data = request.get_json()
     data, _ = user_schema.load(req_data)
     letters = string.ascii_lowercase
     login_gen = ''.join(random.choice(letters) for i in range(10))
-    user = user_model(data, login_gen)
-    user.save()
+    try:
+        user = user_model(data, login_gen)
+        user.save()
+    except LookupError:
+        return custom_response('wrong user', 400)
 #    ser_data = user_schema.dump(user).data
-    return custom_response({'login': login_gen}, 200)
+    return custom_response({'login': str(user)}, 200)
 
 
 @user_api.route('/', methods=['GET'])
