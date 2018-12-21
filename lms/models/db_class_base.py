@@ -2,7 +2,7 @@ from . import db
 
 
 class db_class_base():
-    
+
     def save(self):
         db.session.add(self)
         db.session.commit()
@@ -16,4 +16,3 @@ class db_class_base():
     def delete(self):
         db.session.delete(self)
         db.session.commit()
-    

@@ -3,6 +3,7 @@ from . import db
 from .x import course_x_group, teacher_x_course
 from .db_class_base import db_class_base
 
+
 class study_course(db.Model, db_class_base):
     __tablename__ = 'study_courses'
 
